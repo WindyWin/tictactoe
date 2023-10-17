@@ -8,7 +8,7 @@ const PlayerLevelSection = ({currentPlayer, playerInfo, onSetPlayerLevel, player
         {playerInfo[playerName].items.map((item, index) => {
             const level = index + 1
             return <div onClick={onSetPlayerLevel(index + 1, playerName)} key={index} className={`${playerInfo[playerName].level === level ? borderStyle : ''} ${item && currentPlayer === playerName ? 'cursor-pointer' : 'cursor-not-allowed'}`}>
-                <div className='h-[70px] w-[70px] overflow-hidden object-scale-down'>
+                <div className='flex-1 h-[70px] w-[70px] overflow-hidden object-scale-down'>
                     <PlayerPointer currentPlayer={playerName} level={level} />
                 </div>
                 <p className='text-center'>{item}</p>

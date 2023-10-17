@@ -9,15 +9,15 @@ function App() {
   const { ticTacToeMap, currentPlayer, playerInfo, message } = state;
   return (
     <div className="mt-3 flex flex-col gap-4 ">
-      <div className="flex justify-around items-center" >
-        <span>Turn:
-          <div className="flex gap-8">
+      <div className="flex justify-around items-center flex-wrap  " >
+        <span className='font-semibold' >Turn:
+          <div className="flex gap-8 flex-wrap mb-4 justify-center">
             <PlayerLevelSection playerName='X' playerInfo={playerInfo} currentPlayer={currentPlayer} onSetPlayerLevel={onSetPlayerLevel} />
             <PlayerLevelSection playerName='O' playerInfo={playerInfo} currentPlayer={currentPlayer} onSetPlayerLevel={onSetPlayerLevel} />
 
           </div>
         </span>
-        <button className="bg-slate-300 py-2 px-5 " onClick={onResetGame}>Reset</button>
+        <button className="bg-blue-500 text-white font-semibold rounded-md py-2 px-5 md:justify-self-end" onClick={onResetGame}>Reset</button>
       </div>
       <div className='flex flex-col justify-center items-center'>
         {ticTacToeMap.map((row, rowIndex) => {
