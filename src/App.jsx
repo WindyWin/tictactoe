@@ -1,103 +1,42 @@
-import { useEffect, useMemo, useState } from 'react'
 import './App.css'
-import { ItemBlock } from './component/ItemBlock'
 
-const winningCondition = [
-  [[0, 0], [0, 1], [0, 2]], // row 1
-  [[1, 0], [1, 1], [1, 2]], // row 2
-  [[2, 0], [2, 1], [2, 2]], // row 3
-  [[0, 0], [1, 0], [2, 0]], // col 1
-  [[0, 1], [1, 1], [2, 1]], // col 2
-  [[0, 2], [1, 2], [2, 2]], // col 3
-  [[0, 0], [1, 1], [2, 2]], // cross 1
-  [[0, 2], [1, 1], [2, 0]], // cross 2
-]
+import { ItemBlock } from './components/ItemBlock'
+import { PlayerLevelSection } from './components/PlayerLevelSection'
 
+import { useTicTacToe } from './useTicTacToe'
 function App() {
-  const [ticTacToeMap, setTicTacToeMap] = useState([
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', '']
-  ])
-  const [currentPlayer, setCurrentPlayer] = useState('X')
-  const [step, setStep] = useState(0)
-  const [message, setMessage] = useState('')
-
-  useEffect(() => {
-    for (let i = 0; i < winningCondition.length; i++) {
-      let count = 0;
-      for (let j = 0; j < winningCondition[i].length; j++) {
-        let [row, col] = winningCondition[i][j];
-        if (ticTacToeMap[row][col] === currentPlayer) {
-          count++;
-        }
-      }
-      if (count === 3) {
-        // alert(`${currentPlayer} is winner`);
-        setMessage(`${currentPlayer} is winner`)
-        setTimeout(() => {
-          resetGame()
-        }, 1000)
-
-      }
-    }
-
-
-  }, [currentPlayer, ticTacToeMap])
-  useEffect(() => {
-
-    if (step === 9 && message === '') {
-      setMessage('Draw')
-      setTimeout(() => {
-        resetGame()
-      }, 1000)
-
-    }
-
-
-  }, [step])
-
-  const onItemClick =
-    (rowIndex, colIndex) => () => {
-      if (ticTacToeMap[rowIndex][colIndex] !== '') return;
-      let newMap = [...ticTacToeMap]
-      newMap[rowIndex][colIndex] = currentPlayer
-      setTicTacToeMap(newMap)
-      setCurrentPlayer(currentPlayer === 'O' ? 'X' : 'O')
-      setStep(step + 1);
-    }
-
-
-  const resetGame = () => {
-    setTicTacToeMap([
-      ['', '', ''],
-      ['', '', ''],
-      ['', '', '']
-    ])
-    setCurrentPlayer('X')
-    setStep(0)
-    setMessage('')
-  }
-
-
+  const { onResetGame, onSetPlayerLevel, onPlayerClick, state } = useTicTacToe()
+  const { ticTacToeMap, currentPlayer, playerInfo, message } = state;
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <p style={{ marginBottom: "1 rem" }}>{message}</p>
-      {ticTacToeMap.map((row, rowIndex) => {
-        return <div key={rowIndex} style={{ display: 'flex' }}>{
-          row.map((item, colIndex) => (
-            <ItemBlock
-              key={`${rowIndex}-${colIndex}`}
-              item={item}
-              onClick={onItemClick(rowIndex, colIndex)} />
-          ))
-        }</div>
+    <div className="mt-3 flex flex-col gap-4 ">
+      <div className="flex justify-around items-center" >
+        <span>Turn:
+          <div className="flex gap-8">
+            <PlayerLevelSection playerName='X' playerInfo={playerInfo} currentPlayer={currentPlayer} onSetPlayerLevel={onSetPlayerLevel} />
+            <PlayerLevelSection playerName='O' playerInfo={playerInfo} currentPlayer={currentPlayer} onSetPlayerLevel={onSetPlayerLevel} />
 
-      })}
-      <button onClick={resetGame}>Reset</button>
+          </div>
+        </span>
+        <button className="bg-slate-300 py-2 px-5 " onClick={onResetGame}>Reset</button>
+      </div>
+      <div className='flex flex-col justify-center items-center'>
+        {ticTacToeMap.map((row, rowIndex) => {
+          return <div key={rowIndex} className='flex'>{
+            row.map((item, colIndex) => (
+              <ItemBlock
+                key={`${rowIndex}-${colIndex}`}
+                item={item}
+                onClick={onPlayerClick(rowIndex, colIndex)} />
+            ))
+          }</div>
+        })}
+      </div>
+      <p className='text-2xl font-semibold text-center text-red-700'>{message}</p>
 
     </div>
   )
 }
 
 export default App
+
+
