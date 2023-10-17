@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "CHOKIDAR_USEPOLLING=true vite",
-    "tailwind": "CHOKIDAR_USEPOLLING=true tailwindcss -i ./src/App.css -o ./src/styles/tailwind.output.css --watch",
+    "dev": "tailwindcss -i ./src/App.css -o ./dist/tailwind.output.css && CHOKIDAR_USEPOLLING=true vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
